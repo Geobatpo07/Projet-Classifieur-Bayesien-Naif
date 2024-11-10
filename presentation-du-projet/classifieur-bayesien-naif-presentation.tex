@@ -1,0 +1,170 @@
+\documentclass{beamer}
+\usetheme{Madrid}
+\usepackage[utf8]{inputenc}
+
+\title{Projet de Prédiction d'Achat avec Naive Bayes}
+\author{Geovany Batista Polo LAGUERRE \\ Onel GUSTAVE \\ Stive PAUL}
+\institute{Université des Antilles - M1 Mathématiques et Applications (MOAD)}
+\date{\today}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}{Introduction}
+    \begin{block}{Contexte}
+        Dans un monde axé sur les données, prédire les comportements d'achat à partir de simples mots-clés devient un atout majeur.
+    \end{block}
+    
+    \begin{block}{Objectif}
+        Utiliser le modèle Naive Bayes avec lissage de Laplace pour prédire l'intention d'achat en fonction de la description d'un produit.
+    \end{block}
+    
+    \begin{block}{Méthode}
+        \begin{itemize}
+            \item Modélisation des probabilités conditionnelles avec Naive Bayes.
+            \item Script interactif permettant de tester le modèle en temps réel.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+
+\begin{frame}{Concepts-Clés}
+    \begin{block}{1. Naive Bayes}
+        \begin{itemize}
+            \item Modèle probabiliste simple, basé sur le théorème de Bayes.
+            \item Hypothèse d'indépendance : chaque mot clé influence l'achat de façon indépendante.
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{2. Lissage de Laplace}
+        \begin{itemize}
+            \item Évite les probabilités nulles pour les mots rares ou absents.
+            \item Rend le modèle plus robuste face aux nouvelles données.
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{3. Probabilités Conditionnelles}
+        \begin{itemize}
+            \item Probabilité d'achat en fonction des mots-clés dans la description.
+            \item Exemple : P(achat | "pas cher" et "anglais").
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Modèle Naive Bayes}
+    \begin{block}{1. Théorème de Bayes}
+        \[
+        P(\text{achat} | \text{mots}) = \frac{P(\text{mots} | \text{achat}) \cdot P(\text{achat})}{P(\text{mots})}
+        \]
+        \begin{itemize}
+            \item \( P(\text{achat} | \text{mots}) \): Probabilité d'achat, donnée la description.
+            \item \( P(\text{mots} | \text{achat}) \): Probabilité des mots, sachant qu'il y a achat.
+            \item \( P(\text{achat}) \): Probabilité a priori d'achat.
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{2. Hypothèse d'Indépendance Conditionnelle}
+        \begin{itemize}
+            \item Naive Bayes suppose que chaque mot influence indépendamment la probabilité d'achat.
+            \item Ainsi, \( P(\text{achat} | \text{mots}) \) est calculé comme :
+            \[
+            P(\text{achat} | \text{mots}) = P(\text{achat}) \cdot P(\text{mot}_1 | \text{achat}) \cdot P(\text{mot}_2 | \text{achat}) \cdot \dots \cdot P(\text{mot}_n | \text{achat})
+            \]
+            où chaque \( P(\text{mot}_i | \text{achat}) \) représente la probabilité d'apparition d'un mot donné en cas d'achat.
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{3. Application au Projet}
+        \begin{itemize}
+            \item Modèle utilisé pour prédire si un utilisateur souhaite acheter un produit basé sur des mots-clés comme "pas cher" ou "anglais".
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Lissage de Laplace}
+    \begin{block}{Pourquoi le Lissage de Laplace ?}
+        \begin{itemize}
+            \item Lorsqu'un mot de la requête n'apparaît pas dans le dataset, sa probabilité \( P(\text{mot} | \text{classe}) \) est nulle.
+            \item Cela rend le produit des probabilités nul, ce qui fausse les calculs de probabilité conditionnelle.
+            \item Le lissage de Laplace permet de gérer ce problème en ajoutant une petite valeur aux comptes.
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{Formule du Lissage de Laplace}
+        \[
+        P(\text{mot} | \text{classe}) = \frac{\text{count(mot, classe)} + 1}{\text{count(classe)} + V}
+        \]
+        où :
+        \begin{itemize}
+            \item \textbf{count(mot, classe)} : fréquence d'apparition du mot dans la classe.
+            \item \textbf{count(classe)} : total des mots dans la classe.
+            \item \( V \): taille du vocabulaire (nombre total de mots uniques).
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{Application dans le Modèle}
+        \begin{itemize}
+            \item Dans notre projet, le lissage de Laplace est utilisé pour éviter les probabilités nulles.
+            \item Cela garantit que chaque mot dans une requête a une influence, même s'il est rare.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Implémentation du Modèle Naive Bayes}
+    \begin{block}{1. Chargement des Données}
+        \begin{itemize}
+            \item Les données contiennent des attributs comme \texttt{pas\_cher}, \texttt{anglais}, et \texttt{achat}.
+            \item Utilisation d'un dictionnaire Python pour représenter chaque observation.
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{2. Calcul des Probabilités a Priori}
+        \begin{itemize}
+            \item Calcul de \( P(\text{achat}) \) et \( P(\text{non\_achat}) \).
+            \item Basé sur les fréquences d'achat dans les données.
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{3. Calcul des Probabilités Conditionnelles}
+        \begin{itemize}
+            \item Application du lissage de Laplace pour gérer les valeurs nulles.
+            \item Calcul de \( P(\text{pas\_cher}|\text{achat}) \), \( P(\text{anglais}|\text{achat}) \), etc.
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{4. Prédiction avec le Modèle}
+        \begin{itemize}
+            \item Parse de la requête utilisateur pour extraire les mots-clés.
+            \item Utilisation de la règle de Bayes pour calculer \( P(\text{achat}|\text{requête}) \).
+            \item Retourne \texttt{achat} ou \texttt{non\_achat} en fonction des probabilités calculées.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+
+\begin{frame}{Démonstration - Exemple pratique}
+    \begin{itemize}
+        \item Requête de l'utilisateur : "je veux un pantalon anglais pas cher"
+        \item Conversion de la requête en mots-clés : \texttt{pas\_cher, anglais}
+        \item Calcul des probabilités avec Naive Bayes et prédiction.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Conclusion}
+    \begin{itemize}
+        \item \textbf{Naive Bayes} : un modèle simple et efficace pour la classification, utilisé ici pour prédire l'achat d'un produit.
+        \item \textbf{Lissage de Laplace} : améliore la précision du modèle en évitant les probabilités nulles.
+        \item \textbf{Résultats} : le modèle fonctionne bien avec des données simples, mais peut être amélioré avec plus de données.
+    \end{itemize}
+    
+    \vspace{1em}
+    \begin{block}{Perspectives}
+        \begin{itemize}
+            \item \textbf{Améliorer le prétraitement} : explorer des techniques de traitement de texte avancées.
+            \item \textbf{Tester sur plus de données} : valider les performances sur des ensembles plus grands et variés.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\end{document}

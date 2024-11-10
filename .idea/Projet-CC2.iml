@@ -3,7 +3,7 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
-      <excludeFolder url="file://$MODULE_DIR$/venv" />
+      <excludeFolder url="file://$MODULE_DIR$/code-du-programme/venv" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.12 (Projet-Classifieur-Bayesien-Naif)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
